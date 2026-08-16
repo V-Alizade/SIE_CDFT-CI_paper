@@ -1,0 +1,41 @@
+@SET RESTART_1            FALSE
+@SET WFN_FILE_1           dummy.wfn
+
+@SET DFT_FILE             dft-skala-common-params.inc
+
+@SET PROJECT_NAME         nh3-dimer-plus-dist-4.00-skala-energy-q1
+@SET XYZFILE              ./XYZ/nh3-dimer-plus-dist-4.00.xyz
+
+@SET PW_CUTOFF            300
+@SET PW_REL_CUTOFF        50
+@SET SYS_CHARGE           1
+@SET SYS_MULTIPLICITY     2
+@SET SAVE_CUBE            FALSE
+@SET CENTER_SYS           ON
+
+@SET BECKE_ACTIVE         FALSE
+@SET BECKE_STR_1          0.0
+@SET BECKE_TARGET_1       0.0
+
+@SET BECKE_FRAG_CONSTRAINT FALSE
+@SET BECKE_FRAG_A         dummy.cube
+@SET BECKE_FRAG_A_SPIN    dummy.cube
+@SET BECKE_FRAG_B         dummy.cube
+@SET BECKE_FRAG_B_SPIN    dummy.cube
+
+&GLOBAL
+  PROJECT ${PROJECT_NAME}
+  RUN_TYPE ENERGY
+  PRINT_LEVEL MEDIUM
+&END GLOBAL
+
+&FORCE_EVAL
+  @SET WFN_FILE     ${WFN_FILE_1}
+  @SET RESTART      ${RESTART_1}
+  @SET NAME         ${PROJECT_NAME}
+  @SET BECKE_TARGET ${BECKE_TARGET_1}
+  @SET BECKE_STR    ${BECKE_STR_1}
+  METHOD QS
+  @include ${DFT_FILE}
+  @include subsys.inc
+&END FORCE_EVAL
